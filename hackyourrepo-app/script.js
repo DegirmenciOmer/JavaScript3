@@ -1,24 +1,5 @@
 "use strict";
 
-/*
-  Write here your JavaScript for HackYourRepo!
-
-  This application, HackYourRepo, does 2 things:
-
-It makes connection to the GitHub API and retrieves all the repositories found in the HackYourFuture account.
-It displays those repositories in an alphabetically-ordered list. When a user clicks on any of the repository names it will show more details about it.
-In the course of the next 3 weeks you'll be writing the necessary code to make all of this work!
-
-4.1 Requirements
-To get started, make sure you're in the right GIT branch: week1-[YOURNAME]. Then, navigate to the hackyourrepo-app folder and become familiar with the files there.
-
-This week you're required to (1) setup the HTML structure of the application. In addition, you are expected to (2) style the application to make it user-friendly.
-
-Here are the requirements for the HTML:
-
-Include 3 <section> tags
-Include a <select> tag
-*/
 const placeholderRepos = [
   {
     name: 'SampleRepo1',
@@ -54,7 +35,6 @@ function createAndAppend(name, parent, options = {}) {
   return elem;
 }
 
-
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< section1: Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 const body = document.body;
@@ -77,7 +57,6 @@ const options = placeholderRepos.map(repo =>
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Fetch Repo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const repoAndContributorContainer = createAndAppend('div', main, {class: 'repo-and-contributor-container'});
 const repoSection = createAndAppend('section', repoAndContributorContainer, {class: 'repo-section'});
-options.forEach(option => console.log(option))
 const repoNames = placeholderRepos.map(repo => repo.name)
 const repoKeys = Object.keys(placeholderRepos[0])
 const repoValues = Object.values(placeholderRepos[0])
@@ -109,19 +88,6 @@ const repoTable = createAndAppend('ul', repoSection, {
   `,
   class: 'repo-table'
 });
-console.log(repoTable);
-
-  // repoKeys.forEach((repoInfo, index) => {
-  //   const p = createAndAppend('p', li);
-  //   const span1 = createAndAppend('span', p, {
-  //     text: names[index],
-  //     class: 'repo-span bold'
-  //   })
-  //   const span2 = createAndAppend('span', p, {
-  //     text: `: ${repoInfo}`,
-  //     class: 'repo-span'
-  //   });
-  // })
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< Contributors Section >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
