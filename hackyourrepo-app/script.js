@@ -22,7 +22,7 @@ const placeholderRepos = [
   },
 ];
 
-function createAndAppend(name, parent, options = {}) {
+function createAndAppend(name, parent, options = {}) {//source: hyf earlier javascript3 homework
   const elem = document.createElement(name);
   parent.appendChild(elem);
   Object.entries(options).forEach(([key, value]) => {
@@ -34,7 +34,6 @@ function createAndAppend(name, parent, options = {}) {
   });
   return elem;
 }
-
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< section1: Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 const body = document.body;
@@ -45,51 +44,59 @@ const h1OfSection1 = createAndAppend('h1', headerHyf, {
   text: `HYF Repositories`,
   class: 'h1-hyf'
 });
-
 // Select menu inside the header
-const select = createAndAppend('select', headerHyf);
-const options = placeholderRepos.map(repo =>
-  createAndAppend('option', select, {
-    text: repo.name,
-    value: repo
-  })
-)
+const select = createAndAppend('select', headerHyf, {id: 'select-repo-list'});
+
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Fetch Repo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const repoAndContributorContainer = createAndAppend('div', main, {class: 'repo-and-contributor-container'});
-const repoSection = createAndAppend('section', repoAndContributorContainer, {class: 'repo-section'});
-const repoNames = placeholderRepos.map(repo => repo.name)
-const repoKeys = Object.keys(placeholderRepos[0])
-const repoValues = Object.values(placeholderRepos[0])
-const repoTable = createAndAppend('ul', repoSection, {
-  text: `
-    <li>
-      <table>
-        <tbody>
-          <tr>
-            <th>${repoKeys[0]}:</th>
-            <td>${repoValues[0]}</td>
-          </tr>
-          <tr>
-            <th>${repoKeys[1]}:</th>
-            <td>${repoValues[1]}d</td>
-          </tr>
-          <tr>
-            <th>${repoKeys[2]}:</th>
-            <td>${repoValues[2]}</td>
-          </tr>
-          <tr>
-            <th>${repoKeys[3]}:</th>
-            <td>${repoValues[3]}</td>
-          </tr>
-        </tbody>
-      </table>
-    </li>  
+function fetchRepoDetails () {
+  let repoSection = ''; 
+  select.innerHTML = '';
+  let repoTable = '';
+  //repoAndContributorContainer.innerHTML = '';
+  repoSection = createAndAppend('section', repoAndContributorContainer, {class: 'repo-section'});
+  const repoKeys = Object.keys(placeholderRepos[0]);
+  const repoValues = Object.values(placeholderRepos[0]);
+  repoTable = createAndAppend('ul', repoSection, {
+    text: `
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <th>${repoKeys[0]}:</th>
+              <td>${repoValues[0]}</td>
+            </tr>
+            <tr>
+              <th>${repoKeys[1]}:</th>
+              <td>${repoValues[1]}d</td>
+            </tr>
+            <tr>
+              <th>${repoKeys[2]}:</th>
+              <td>${repoValues[2]}</td>
+            </tr>
+            <tr>
+              <th>${repoKeys[3]}:</th>
+              <td>${repoValues[3]}</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>  
+    `,
+    class: 'repo-table'
+  });
+  const options = placeholderRepos.map(repo =>
+    createAndAppend('option', select, {
+      text: repo.name,
+      value: placeholderRepos[0]
+    })
+  );
+  const repos = select.options[select.selectedIndex].value; 
+  //source: https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
+  console.log(repos);
 
-  `,
-  class: 'repo-table'
-});
-
-
+}
+select.onchange = fetchRepoDetails;
+fetchRepoDetails();
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< Contributors Section >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 const contributorsSection = createAndAppend('section', repoAndContributorContainer, {
