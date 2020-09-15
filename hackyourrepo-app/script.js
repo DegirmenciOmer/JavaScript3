@@ -10,7 +10,7 @@ const mainContainer = createAndAppend("main", body, {
 const repoContainer = createAndAppend("section", mainContainer, {
   class: "repo-section",
 });
-const contContainer = createAndAppend("section", mainContainer, {
+const contributorSection = createAndAppend("section", mainContainer, {
   class: "contributors-section",
 });
 
@@ -95,8 +95,8 @@ function renderRepoSection(repo) { //Handles the section2
 }
 
 function renderContributorsSection(contributors) {//section 3
-    contContainer.innerHTML = ''
-    const ul = createAndAppend('ul', contContainer)
+    contributorSection.innerHTML = ''
+    const ul = createAndAppend('ul', contributorSection)
     contributors.forEach(person => {
         const li = createAndAppend('li', ul, { class : 'contributors'})
         createAndAppend('img',li, { src : person.avatar_url, class : 'avatar'})
