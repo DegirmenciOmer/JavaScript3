@@ -1,55 +1,24 @@
 "use strict";
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<< section1: Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-const body = document.body;
-const main = createAndAppend('main', body);
-const section1 = createAndAppend('section', main, { class: 'section1' });
-const headerHyf = createAndAppend('header', section1, { class: 'header-hyf' });
-const h1OfSection1 = createAndAppend('h1', headerHyf, {
-  text: `HYF Repositories`,
-  class: 'h1-hyf'
+//Element definitions
+const body = document.querySelector("body");
+const headerSection = createAndAppend("section", body, { class: "section1" }); // 1st section
+const dropMenu = createAndAppend("select", headerSection);
+const mainContainer = createAndAppend("main", body, {
+  class: "main-container",
 });
-const select = createAndAppend('select', headerHyf, { id: 'select-repo-list' });
-const repoAndContributorContainer = createAndAppend('div', main, { class: 'repo-and-contributor-container' });
+const repoContainer = createAndAppend("section", mainContainer, {
+  class: "repo-section",
+});
+const contContainer = createAndAppend("section", mainContainer, {
+  class: "contributors-section",
+});
 
-function fetchRepoDetails(APIURL) {
-  const promise = new Promise((resolve, reject) => {
-
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.onload = () => {
-      if(xhr.status >= 200 && xhr.status < 400) {
-        resolve(xhr.response)
-      }
-      else {
-        reject (new Error(`HTTP error status code: ${xhr.status}`));
-      }
-    }
-    xhr.onerror = () => {
-      reject(new Error('Network error'));
-    }
-
-    xhr.open('GET', APIURL);
-    xhr.send();
-  });
-  return promise;
-}
-const url = 'https://api.github.com/orgs/HackYourFuture/repos?per_page=100';
-
-fetchRepoDetails(url).then((response) => {
-  const hyfRepos = response[0]
-  console.log(hyfRepos.name);
-  console.log(new Date(hyfRepos.updated_at).toDateString());
-  console.log(hyfRepos.forks);
-  console.log(hyfRepos.description);
-})
-
-function createAndAppend(name, parent, options = {}) {//source: hyf earlier javascript3 homework
+function createAndAppend(name, parent, options = {}) { // A very useful function which I inherited from the previous js3 homework.
   const elem = document.createElement(name);
   parent.appendChild(elem);
   Object.entries(options).forEach(([key, value]) => {
-    if (key === 'text') {
+    if (key === "text") {
       elem.innerHTML = value;
     } else {
       elem.setAttribute(key, value);
@@ -57,102 +26,99 @@ function createAndAppend(name, parent, options = {}) {//source: hyf earlier java
   });
   return elem;
 }
-// Select menu inside the header
 
-function selectMenuCreator(repos) {
-  const repoContainer = document.querySelector('.repo-container');
-  const repoUl = createAndAppend('ul', repoContainer);
-  renderRepoDetails(repos[0], repoUl);
-  getContributor(repos[0]);
-  repos
-    .sort((a, b) => a.name.localeCompare(b.name, 'en', {
-      numeric: true,
-      ignorePunctuation: true
-    }, {
-      sensitivity: 'base'
-    }))
-    .forEach((repo, index) => {
-      createAndAppend('option', selectMenu, {
-        text: `${repo.name}`,
-        value: index
-      })
-      selectMenu.addEventListener('change', (e) => {
-        if (e.target.value == index) {
-          repoUl.innerText= '';
-          contributorsContainer.innerText= '';
-          renderRepoDetails(repo, repoUl);
-          getContributor(repo);
-        }
-      });
-    })
+function fetchData(url) {
+  const promise = new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 400) {
+        resolve(xhr.response);
+      } else {
+        reject(new Error(`HTTP error status code: ${xhr.status}`));
+      }
+    };
+    xhr.onerror = () => {
+      reject(new Error("Network error"));
+    };
+
+    xhr.open("GET", url);
+    xhr.send();
+  });
+  return promise;
 }
 
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<< Fetch Repo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// function fetchRepoDetails() {
-//   let repoSection = '';
-//   select.innerHTML = '';
-//   let repoTable = '';
-//   //repoAndContributorContainer.innerHTML = '';
-//   repoSection = createAndAppend('section', repoAndContributorContainer, { class: 'repo-section' });
-//   const repoKeys = Object.keys(hyfRepos[0]);
-//   const repoValues = Object.values(hyfRepos[0]);
-//   repoTable = createAndAppend('ul', repoSection, {
-//     text: `
-//       <li>
-//         <table>
-//           <tbody>
-//             <tr>
-//               <th>${repoKeys[0]}:</th>
-//               <td>${repoValues[0]}</td>
-//             </tr>
-//             <tr>
-//               <th>${repoKeys[1]}:</th>
-//               <td>${repoValues[1]}d</td>
-//             </tr>
-//             <tr>
-//               <th>${repoKeys[2]}:</th>
-//               <td>${repoValues[2]}</td>
-//             </tr>
-//             <tr>
-//               <th>${repoKeys[3]}:</th>
-//               <td>${repoValues[3]}</td>
-//             </tr>
-//           </tbody>
-//         </table>
-//       </li>  
-//     `,
-//     class: 'repo-table'
-//   });
-//   const options = hyfRepos.map(repo =>
-//     createAndAppend('option', select, {
-//       text: repo.name,
-//       value: hyfRepos[0]
-//     })
-//   );
-//   const repos = select.options[select.selectedIndex].value;
-//   //source: https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
-//   console.log(repos);
+function repoCreator(repoData) { //sorts the repo list, fetches the options, and trigers the section2-repo container
+  repoData.sort((a, b) => a.name.localeCompare(b.name, 'en', {
+    numeric: true,
+    ignorePunctuation: true
+  }, {
+    sensitivity: 'base'
+  })).forEach((repo, index) => {
+    createAndAppend("option", dropMenu, { text: repo.name, value: index });
+    dropMenu.addEventListener("change", (e) => {
+      if (e.target.value == index) {
+        renderRepoSection(repo);
+      }
+    });
+  });
+}
 
-// }
-// select.onchange = fetchRepoDetails;
-// fetchRepoDetails();
-// //<<<<<<<<<<<<<<<<<<<<<<<<<<<< Contributors Section >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function renderRepoSection(repo) { //Handles the section2
+  repoContainer.innerHTML = "";
+  const ul = createAndAppend("ul", repoContainer, {class: 'repo-table'});
+  const li = createAndAppend("li", ul);
+  li.innerHTML = `<table>
+    <tbody>
+      <tr>
+        <th>Repository:</th>
+        <td>${repo.name}</td>
+      </tr>
+      <tr>
+        <th>Description:</th>
+        <td>${repo.description}d</td>
+      </tr>
+      <tr>
+        <th>Forks :</th>
+        <td>${repo.forks}</td>
+      </tr>
+      <tr>
+        <th>Updated at :</th>
+        <td>${new Date(repo.updated_at).toDateString()}</td>
+      </tr>
+    </tbody>
+  </table>`;
 
-// const contributorsSection = createAndAppend('section', repoAndContributorContainer, {
-//   text: `
-//     <ul>
-//         <li class="contributors">
-//           <img src="./hyf.png" alt="temporary image">
-//           <a href="https://github.com/HackYourFuture">Contributor Name</a>
-//           <span>121</span>
-//         </li>
-//         <li class="contributors">
-//           <img src="./hyf.png" alt="temporary image">
-//           <a href="https://github.com/HackYourFuture">Contributor Name</a>
-//           <span>121</span>
-//         </li>
-//     </ul>
-//   `,
-//   class: 'contributors-section'
-// });
+  fetchData(repo.contributors_url).then(response =>renderContributorsSection(response)) // fetches contributors data and creates a card for it
+}
+
+function renderContributorsSection(contributors) {//section 3
+    contContainer.innerHTML = ''
+    const ul = createAndAppend('ul', contContainer)
+    contributors.forEach(person => {
+        const li = createAndAppend('li', ul, { class : 'contributors'})
+        createAndAppend('img',li, { src : person.avatar_url, class : 'avatar'})
+        createAndAppend('span',li, {
+          text: person.login,
+          class: 'contributor-name'})
+        createAndAppend('span',li, {
+          text: person.contributions,
+        class: 'contribution-num'})
+    })
+}
+
+const API_URL = "https://api.github.com/orgs/HackYourFuture/repos?per_page=100";
+
+function main() {
+  fetchData(API_URL).then((response) => {
+    repoCreator(response);
+    renderRepoSection(response[0]);
+  });
+}
+
+
+window.onload = () => {
+  main();
+};
