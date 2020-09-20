@@ -2,11 +2,11 @@ function createAndAppend(name, parent, options = {}) { // A very useful function
     const elem = document.createElement(name);
     parent.appendChild(elem);
     Object.entries(options).forEach(([key, value]) => {
-      if (key === "text") {
-        elem.innerHTML = value;
-      } else {
-        elem.setAttribute(key, value);
-      }
+        if (key === "text") {
+            elem.innerHTML = value;
+        } else {
+            elem.setAttribute(key, value);
+        }
     });
     return elem;
-  }
+}

@@ -12,4 +12,3 @@ const contributorSection = createAndAppend("section", mainContainer, {
 });
 
 
-  
