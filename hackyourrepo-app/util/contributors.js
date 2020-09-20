@@ -24,4 +24,5 @@ function renderContributorsSection(contributors, rowsPerPage, page) {//section 3
     })
 
   }
+  setupPagination(contributors, rowsPerPage)
 }
