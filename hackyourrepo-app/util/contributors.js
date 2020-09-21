@@ -1,10 +1,10 @@
-  let currentPage = 1;
-  let rows = 5;
+let currentPage = 1;
+let rows = 5;
 
 function renderContributorsSection(contributors, rowsPerPage, page) {//section 3
   contributorSection.innerHTML = '';
   page--;
-  
+
   let start = rowsPerPage * page;
   let end = start + rowsPerPage;
   let paginatedItems = contributors.slice(start, end);
