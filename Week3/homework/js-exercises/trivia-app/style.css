@@ -1,0 +1,51 @@
+/* 
+  Write here your CSS rules for HackYourRepo!
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    
+  }
+
+header {
+  margin: 20px 0 40px 40px ;
+  width: 90%;
+}
+  
+  main {
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    background: #cccccc;
+    width: 90%;
+    margin: auto;
+    align-items: center;
+  }
+
+
+li {
+  margin 10px 0 10px 0;
+  list-style: none;
+}
+
+.questions, .answers {
+  padding: 10px 20px 10px 10px
+}
+
+li:hover {
+  background: #a1a1a1;
+  cursor: pointer;
+}
+
+.answers {
+  background: #f6f6f6;
+
+}
+  
+  

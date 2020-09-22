@@ -46,7 +46,7 @@ class Horse extends Organism {
     }
 }
 
-const abdulkareem = new Person('Abdukareem', 35, 'man', 'construction worker', 'Riyadh', true, 3, 'dates', 'smoke water pipe', 'makes houses')
+const abdulkareem = new Person('Abdukareem', 35, 'male', 'construction worker', 'Riyadh', true, 3, 'dates', 'smoke water pipe', 'makes houses')
 
-const adel = new Horse('Adel', 15, 'brown', 'Riyadh', 'brown','grass', 'transport materials')
+const adel = new Horse('Adel', 15, undefined, 'Riyadh', 'brown', 'grass', 'transport materials')
 console.log(abdulkareem, adel);

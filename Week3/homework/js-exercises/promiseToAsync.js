@@ -12,7 +12,7 @@ getData('https://randomfox.ca/floof/');
 async function getAsyncData(url) {
     try {
         const response = await fetch(url)
-        const jayson = await response.json;
+        const jayson = await response.json();
         console.log(jayson)
     }
     catch (err) {
