@@ -12,16 +12,18 @@ When any one of the 2 buttons is clicked it should make an API call to https://d
 After receiving the data, append to the <ul> a <li> that contains an <img> element with the dog image
 Incorporate error handling */
 
-
 //
 const dogUrl = 'https://dog.ceo/api/breeds/image/random';
 const dogsImgList = document.createElement('ul');
-document.body.appendChild(dogsImgList);
+const buttonsContainer = document.createElement('div');
 const dogImgFetchBtnXHR = document.createElement('button');
+document.body.appendChild(buttonsContainer);
+buttonsContainer.appendChild(dogImgFetchBtnXHR);
+buttonsContainer.style.position = 'fixed';
+document.body.appendChild(dogsImgList);
 dogImgFetchBtnXHR.textContent = 'Dog Photos via XHR!';
-document.body.append(dogImgFetchBtnXHR);
 dogImgFetchBtnXHR.onclick = () => {
-    getRandomDogPhotosUsingXHR(dogUrl);
+  getRandomDogPhotosUsingXHR(dogUrl);
 }
 
 
@@ -29,55 +31,55 @@ dogImgFetchBtnXHR.onclick = () => {
 /////////////////// FETCH USING XHR \\\\\\\\\\\\\\\\\\\\\\\\
 
 function getRandomDogPhotosUsingXHR(url) {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.onload =  () => {
-        if (xhr.status < 400) {
-            const data = xhr.response;
-            dogsImgList.innerHTML += `<li><img src="${data.message}"> </li>
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = 'json';
+  xhr.onload = () => {
+    if (xhr.status < 400) {
+      const data = xhr.response;
+      dogsImgList.innerHTML += `<li><img width="255px" src="${data.message}"> </li>
             `
-        }
-        else {
-            console.log("HTTP Error ", xhr.status);
-            dogsImgList.innerHTML += `<li>Error: Request failed with status code: ${xhr.status} </li>
+    }
+    else {
+      console.log("HTTP Error ", xhr.status);
+      dogsImgList.innerHTML += `<li>Error: Request failed with status code: ${xhr.status} </li>
             `;
-            dogsImgList.style.color = 'red';
+      dogsImgList.style.color = 'red';
 
-        }
     }
-    xhr.onerror = () => {
-        console.log('Something went wrong.');
-        dogsImgList.innerHTML += `<li>'Something went wrong.' </li>
+  }
+  xhr.onerror = () => {
+    console.log('Something went wrong.');
+    dogsImgList.innerHTML += `<li>'Something went wrong.' </li>
             `
-    }
-    xhr.open('GET', url, true);
-    xhr.send();
+  }
+  xhr.open('GET', url, true);
+  xhr.send();
 }
 
 dogImgFetchBtnXHR.onclick = () => {
-    getRandomDogPhotosUsingXHR(dogUrl);
+  getRandomDogPhotosUsingXHR(dogUrl);
 }
 
 //////////// FETCH USING AXIOS \\\\\\\\\\\\\\\\\
 
 function getRandomDogPhotosUsingAxios(url) {
-    axios.get(url)
+  axios.get(url)
     .then(function (response) {
-        // handle success
-        const data = response.data.message;
-        dogsImgList.innerHTML += `<li><img src="${response.data.message}"> </li>
+      // handle success
+      const data = response.data.message;
+      dogsImgList.innerHTML += `<li><img width="255px" src="${response.data.message}"> </li>
         `
-})
+    })
     .catch(function (error) {
-        // handle error
-        console.log(error);
-        dogsImgList.innerHTML += `<li>${error} </li>
+      // handle error
+      console.log(error);
+      dogsImgList.innerHTML += `<li>${error} </li>
         `
     });
 }
 const dogImgFetchBtnAxios = document.createElement('button');
 dogImgFetchBtnAxios.textContent = 'Dog Photos via Axios!';
-document.body.append(dogImgFetchBtnAxios);
+buttonsContainer.appendChild(dogImgFetchBtnAxios);
 dogImgFetchBtnAxios.onclick = () => {
-    getRandomDogPhotosUsingAxios(dogUrl);
+  getRandomDogPhotosUsingAxios(dogUrl);
 }

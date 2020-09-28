@@ -38,23 +38,23 @@ function createAndAppend(name, parent, options = {}) {//source: hyf earlier java
 
 const body = document.body;
 const main = createAndAppend('main', body);
-const section1 = createAndAppend('section', main, {class: 'section1'});
-const headerHyf = createAndAppend('header', section1, {class: 'header-hyf'});
+const section1 = createAndAppend('section', main, { class: 'section1' });
+const headerHyf = createAndAppend('header', section1, { class: 'header-hyf' });
 const h1OfSection1 = createAndAppend('h1', headerHyf, {
   text: `HYF Repositories`,
   class: 'h1-hyf'
 });
 // Select menu inside the header
-const select = createAndAppend('select', headerHyf, {id: 'select-repo-list'});
+const select = createAndAppend('select', headerHyf, { id: 'select-repo-list' });
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Fetch Repo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-const repoAndContributorContainer = createAndAppend('div', main, {class: 'repo-and-contributor-container'});
-function fetchRepoDetails () {
-  let repoSection = ''; 
+const repoAndContributorContainer = createAndAppend('div', main, { class: 'repo-and-contributor-container' });
+function fetchRepoDetails() {
+  let repoSection = '';
   select.innerHTML = '';
   let repoTable = '';
   //repoAndContributorContainer.innerHTML = '';
-  repoSection = createAndAppend('section', repoAndContributorContainer, {class: 'repo-section'});
+  repoSection = createAndAppend('section', repoAndContributorContainer, { class: 'repo-section' });
   const repoKeys = Object.keys(placeholderRepos[0]);
   const repoValues = Object.values(placeholderRepos[0]);
   repoTable = createAndAppend('ul', repoSection, {
@@ -90,13 +90,16 @@ function fetchRepoDetails () {
       value: placeholderRepos[0]
     })
   );
-  const repos = select.options[select.selectedIndex].value; 
+  const repos = select.options[select.selectedIndex].value;
   //source: https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
   console.log(repos);
 
 }
-select.onchange = fetchRepoDetails;
 fetchRepoDetails();
+select.onchange = () => {
+  repoSection.innerHTML = '';
+  fetchRepoDetails();
+}
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< Contributors Section >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 const contributorsSection = createAndAppend('section', repoAndContributorContainer, {
@@ -113,6 +116,6 @@ const contributorsSection = createAndAppend('section', repoAndContributorContain
           <span>121</span>
         </li>
     </ul>
-  `, 
+  `,
   class: 'contributors-section'
 });
